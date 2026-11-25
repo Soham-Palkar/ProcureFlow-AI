@@ -2,9 +2,11 @@
 from fastapi import FastAPI, HTTPException
 
 from app.database.connection import test_db_connection
+
 from app.routes.suppliers import router as supplier_router
 from app.routes.purchase_requests import router as purchase_request_router
 from app.routes.quotations import router as quotation_router
+from app.routes.organizations import router as organization_router
 
 
 app = FastAPI(
@@ -13,9 +15,13 @@ app = FastAPI(
     version="1.0.0"
 )
 
+
+# Register API routers
+app.include_router(organization_router)
 app.include_router(supplier_router)
 app.include_router(purchase_request_router)
 app.include_router(quotation_router)
+
 
 @app.get("/")
 def root():

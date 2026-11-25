@@ -1,6 +1,15 @@
 
-from sqlalchemy import Column, String, Text, Integer, Numeric, DateTime, text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import (
+    Column,
+    String,
+    Text,
+    Integer,
+    Numeric,
+    DateTime,
+    text
+)
+from sqlalchemy.dialects.postgresql import UUID, JSONB
+
 from app.database.connection import Base
 
 
@@ -23,4 +32,19 @@ class Quotation(Base):
     payment_terms = Column(Text, nullable=True)
     document_path = Column(Text, nullable=True)
     status = Column(String(30), server_default=text("'received'"))
-    created_at = Column(DateTime(timezone=True), server_default=text("NOW()"))
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=text("NOW()")
+    )
+
+    # AI quotation analysis fields
+    analysis_result = Column(JSONB, nullable=True)
+
+    analysis_status = Column(
+        String(30),
+        server_default=text("'not_analyzed'")
+    )
+
+    analyzed_at = Column(DateTime(timezone=True), nullable=True)
+
+    analysis_error = Column(Text, nullable=True)
